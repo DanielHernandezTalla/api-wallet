@@ -26,14 +26,14 @@ class UserController extends Controller
         try {
 
             // Verificando que el usuario no exista en la base de datos
-            $user = DB::select("exec Get_USER_BY_EMAIL :email", [$request->all()['email']]);
+            $user = DB::select("exec Get_USER_BY_EMAIL :email", [$request->validated()['email']]);
 
             // Si se encuentra usuario en la base de datos, se manda mensaje de duplicado
             if ($user) 
                 return ResponseService::failWithMessage(MessagesService::$isDuplicated);
         
             // Ejecutando procedimiento para dar de alta un usuario
-            $res = DB::update("exec Alta_USER :name, :email, :password", $request->all());
+            $res = DB::update("exec Alta_USER :name, :email, :password", $request->validated());
 
             // En caso de ser 0, se manda mensaje de error o mensaje de ok
             return $res == 1 ? ResponseService::ok() : ResponseService::fail();
@@ -64,7 +64,7 @@ class UserController extends Controller
             if(sizeof($user) == 0 )
                 return ResponseService::failWithMessage(MessagesService::$notFound);
 
-            $res = DB::update("exec Actualizar_USER :id, :name, :email, :password", array_merge(['id'=>$id], $request->all()));
+            $res = DB::update("exec Actualizar_USER :id, :name, :email, :password", array_merge(['id'=>$id], $request->validated()));
             
             return $res == 1 ? ResponseService::ok() : ResponseService::fail();
 
