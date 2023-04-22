@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\IconController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('users', UserController::class)->except(['create', 'edit']);
 
 Route::resource('sections', SectionController::class)->except(['create', 'edit']);
+
+Route::resource('icons', IconController::class)->except(['create', 'edit']);
