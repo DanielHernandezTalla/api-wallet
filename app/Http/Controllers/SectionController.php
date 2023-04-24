@@ -86,6 +86,11 @@ class SectionController extends Controller
         try{
 
             // Falta validar que no tenga ningun movimiento
+            $res = DB::select("exec Count_MOVEMENTS_BY_SECTION :ID", [$id]);
+
+            if (!empty($res)) {
+                return ResponseService::failWithMessage('La seccion cuenta con movimientos existentes');
+            }
 
             $res = DB::update("exec Delete_SECTION_BY_ID :ID", [$id]);
             

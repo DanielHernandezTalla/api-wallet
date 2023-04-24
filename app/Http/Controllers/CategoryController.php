@@ -93,6 +93,11 @@ class CategoryController extends Controller
         try {
 
             // Falta validar que no tenga ninguna movimiento
+            $res = DB::select("exec Count_MOVEMENTS_BY_CATEGORY :ID", [$id]);
+
+            if (!empty($res)) {
+                return ResponseService::failWithMessage('La categoria cuenta con movimientos existentes');
+            }
 
             $res = DB::update("exec Delete_CATEGORY_BY_ID :ID", [$id]);
 

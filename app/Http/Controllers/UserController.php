@@ -76,6 +76,12 @@ class UserController extends Controller
     public function destroy($id)
     {
         try{
+            $res = DB::select("exec Count_SECTIONS_BY_USER :ID", [$id]);
+
+            if (!empty($res)) {
+                return ResponseService::failWithMessage('El usuario cuenta con secciones existentes');
+            }
+
             $res = DB::update("exec Delete_USER_BY_ID :ID", [$id]);
             
             return $res == 1 
