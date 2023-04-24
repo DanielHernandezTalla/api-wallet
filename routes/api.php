@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IconController;
 use App\Http\Controllers\MovementController;
@@ -23,12 +24,27 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('users', UserController::class)->except(['create', 'edit']);
+// Route::get('/', [UserController::class, 'auth'])->name('login');
 
-Route::resource('sections', SectionController::class)->except(['create', 'edit']);
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth',
+], function ($router) {
+    Route::get('unauthorized', [AuthController::class, 'unauthorized'])->name('unauthorized');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('me', [AuthController::class, 'me']);
+    Route::post('cerrar', [AuthController::class, 'cerrar']);
+    Route::post('register', [AuthController::class, 'register']);
+});
 
-Route::resource('icons', IconController::class)->except(['create', 'edit']);
+Route::resource('users', UserController::class)->except(['create', 'edit'])->middleware('auth');
 
-Route::resource('categories', CategoryController::class)->except(['create', 'edit']);
+Route::resource('sections', SectionController::class)->except(['create', 'edit'])->middleware('auth');
 
-Route::resource('movements', MovementController::class)->except(['create', 'edit']);
+Route::resource('icons', IconController::class)->except(['create', 'edit'])->middleware('auth');
+
+Route::resource('categories', CategoryController::class)->except(['create', 'edit'])->middleware('auth');
+
+Route::resource('movements', MovementController::class)->except(['create', 'edit'])->middleware('auth');
