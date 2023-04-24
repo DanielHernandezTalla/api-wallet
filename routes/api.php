@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IconController;
+use App\Http\Controllers\MovementController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -29,3 +30,5 @@ Route::resource('sections', SectionController::class)->except(['create', 'edit']
 Route::resource('icons', IconController::class)->except(['create', 'edit']);
 
 Route::resource('categories', CategoryController::class)->except(['create', 'edit']);
+
+Route::resource('movements', MovementController::class)->except(['create', 'edit']);
